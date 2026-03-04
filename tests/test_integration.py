@@ -1,8 +1,8 @@
 def test_predict_endpoint(client, sample_data):
     response = client.post(
         "/predict",
-        json=sample_data,
-        params={
+        json={
+            "data": sample_data,
             "condition": 27,
             "criterio": "equal",
             "date": "04-02-2026",
@@ -16,8 +16,8 @@ def test_predict_endpoint(client, sample_data):
 def test_predict_trip_endpoint(client, sample_data):
     response = client.post(
         "/predict_trip",
-        json=sample_data,
-        params={
+        json={
+            "data": sample_data,
             "start_date": "01-02-2026",
             "end_date": "05-02-2026",
             "min_temp": 20,
@@ -32,8 +32,8 @@ def test_predict_trip_endpoint(client, sample_data):
 def test_predict_range_endpoint(client, sample_data):
     response = client.post(
         "/predict_range",
-        json=sample_data,
-        params={
+        json={
+            "data": sample_data,
             "date": "04-02-2026",
             "min_temp": 20,
             "max_temp": 30,
