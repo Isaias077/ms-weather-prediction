@@ -13,7 +13,6 @@ def generate_smart_feedback(predicted_temp: float, min_user: float, max_user: fl
     Genera un consejo basado en la diferencia entre lo que el usuario quiere
     y lo que el modelo predice.
     """
-    # Caso 1: La predicción cae DENTRO del rango (o muy cerquita)
     if min_user <= predicted_temp <= max_user:
         return {
             "title": "Clima en Rango",
@@ -21,8 +20,6 @@ def generate_smart_feedback(predicted_temp: float, min_user: float, max_user: fl
             "icon": "😎"
         }
 
-    # Caso 2: Hace MUCHO más frío del que el usuario quiere
-    # (Ej: Usuario pide 30°C para pileta, Predicción es 20°C)
     elif predicted_temp < min_user:
         diff = min_user - predicted_temp
         if diff > 5:
@@ -38,8 +35,6 @@ def generate_smart_feedback(predicted_temp: float, min_user: float, max_user: fl
                 "icon": "🧥"
             }
 
-    # Caso 3: Hace MUCHO más calor del que el usuario quiere
-    # (Ej: Usuario pide 15°C para trekking, Predicción es 35°C)
     elif predicted_temp > max_user:
         diff = predicted_temp - max_user
         if diff > 5:
@@ -54,7 +49,7 @@ def generate_smart_feedback(predicted_temp: float, min_user: float, max_user: fl
                 "body": f"Se esperan {predicted_temp:.1f}°C, supera un poco tu límite máximo. Hidratate bien.",
                 "icon": "😓"
             }
-    return {} # Should not happen if logic covers all cases, but good for safety
+    return {}
 
 def analyze_trip_quality(daily_forecasts: List[Dict[str, Any]]) -> Dict[str, Any]:
     total_days = len(daily_forecasts)
@@ -62,7 +57,6 @@ def analyze_trip_quality(daily_forecasts: List[Dict[str, Any]]) -> Dict[str, Any
     bad_days = 0
     
     for day in daily_forecasts:
-        # Asumimos que > 60% es un buen día para la actividad
         if day["probability"] > 0.60:
             good_days += 1
             day["status"] = "IDEAL"
@@ -75,7 +69,6 @@ def analyze_trip_quality(daily_forecasts: List[Dict[str, Any]]) -> Dict[str, Any
             day["status"] = "MALO"
             day["icon"] = "❌"
             
-    # Lógica de resumen
     if total_days > 0:
         good_percentage = (good_days / total_days) * 100
     else:
