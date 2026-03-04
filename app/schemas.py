@@ -45,3 +45,37 @@ class WeatherResponse(BaseModel):
     month_volatility_std: float
     window_range: str
     message: str
+
+
+class DailyForecastItem(BaseModel):
+    date: str
+    predicted_temp: float
+    probability: float
+    probability_percent: float
+    month_std: float
+    status: Optional[str] = None
+    icon: Optional[str] = None
+
+
+class UserParameters(BaseModel):
+    range: str
+    dates: str
+
+
+class TripPredictionResponse(BaseModel):
+    trip_summary: TripSummary
+    daily_forecast: List[DailyForecastItem]
+    user_parameters: UserParameters
+
+
+class RangePredictionUiData(BaseModel):
+    date: str
+    user_range: str
+    traffic_light: RiskAssessment
+    display_probability: str
+    smart_feedback: SmartFeedback
+
+
+class RangePredictionResponse(BaseModel):
+    ui_data: RangePredictionUiData
+    scientific_data: WeatherResponse
